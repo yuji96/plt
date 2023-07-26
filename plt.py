@@ -22,7 +22,7 @@ def imshow(*args, **kwargs):
     return im
 
 
-def hbox(figures: list[matplotlib.figure.Figure], **kwargs):
+def hbox_old(figures: list[matplotlib.figure.Figure], **kwargs):
     kwargs.setdefault("width", 400)
     widgets = []
     for fig in figures:
@@ -30,3 +30,44 @@ def hbox(figures: list[matplotlib.figure.Figure], **kwargs):
         fig.savefig(buf, format="png")
         widgets.append(ipywidgets.Image(value=buf.getvalue(), format="png", **kwargs))
     display.display(ipywidgets.HBox(widgets))
+
+
+class FigureBox:
+    def __init__(self):
+        self.figures = []
+
+    def append(self, func=None, *args, **kwargs):
+        if func is None:
+            res = None
+        else:
+            res = func(*args, **kwargs)
+        self.figures.append(plt.gcf())
+        plt.close()
+        return res
+
+    def __iter__(self):
+        yield from self.figures
+
+
+class hbox:
+    def __init__(self, **kwargs) -> None:
+        self.kwargs = kwargs
+        self.figures = FigureBox()
+
+    def __enter__(self):
+        return self.figures
+
+    def __exit__(self, type, value, traceback):
+        self.kwargs.setdefault("width", 400)
+        widgets = []
+        for fig in self.figures:
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png")
+            widgets.append(
+                ipywidgets.Image(value=buf.getvalue(), format="png", **self.kwargs)
+            )
+        display.display(ipywidgets.HBox(widgets))
+
+
+# def subplots(*args, **kwargs):
+#     raise AssertionError("subplots なんて使うな. latex の subcaption しか勝たん.")
