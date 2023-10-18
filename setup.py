@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="plt",
-    version="0.0.0",
+    version="0.1.0",
     py_modules=["plt"],
     install_requires=Path(__file__)
     .parent.joinpath("requirements.txt")
