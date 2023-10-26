@@ -9,11 +9,12 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import *
 from seaborn import kdeplot
 
+plt.rcParams["axes.grid"] = True
+plt.rcParams["figure.dpi"] = 100
 plt.rcParams["figure.facecolor"] = "white"
 plt.rcParams["mathtext.fontset"] = "cm"
 plt.rcParams["pdf.fonttype"] = 42
-plt.rcParams["figure.dpi"] = 100
-plt.rcParams["axes.grid"] = True
+plt.rcParams["savefig.bbox"] = "tight"
 
 
 def imshow(*args, **kwargs):
