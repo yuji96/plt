@@ -64,5 +64,17 @@ def detach_tensor(func):
 cbook.safe_masked_invalid = detach_tensor(cbook.safe_masked_invalid)
 
 
+def add_colorbar(pad=0.02, width=0.04, im=None, ax=None, fig=None):
+    if ax is None:
+        ax: plt.Axes = plt.gca()
+    if im is None:
+        im = ax.get_images()[0]
+    if fig is None:
+        fig = plt.gcf()
+    box = ax.get_position()
+    cax = fig.add_axes([box.x1 + pad, box.y0, width, box.height])
+    plt.colorbar(im, cax=cax)
+
+
 # def subplots(*args, **kwargs):
 #     raise AssertionError("subplots なんて使うな. latex の subcaption しか勝たん.")
