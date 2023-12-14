@@ -6,8 +6,14 @@ import ipywidgets
 import japanize_matplotlib
 import matplotlib.figure
 import matplotlib.pyplot as plt
+from matplotlib import cbook
 from matplotlib.pyplot import *
 from seaborn import kdeplot
+
+try:
+    from torch import Tensor
+except:
+    pass
 
 plt.rcParams["axes.grid"] = True
 plt.rcParams["figure.dpi"] = 100
@@ -41,6 +47,21 @@ def hbox(*iterable, **kwargs):
         fig.savefig(buf, format="png")
         widgets.append(ipywidgets.Image(value=buf.getvalue(), format="png", **kwargs))
     display.display(ipywidgets.HBox(widgets))
+
+
+def detach_tensor(func):
+    def wrapper(x, copy=False):
+        try:
+            if isinstance(x, Tensor):
+                x = x.detach()
+        except:
+            pass
+        return func(x, copy=copy)
+
+    return wrapper
+
+
+cbook.safe_masked_invalid = detach_tensor(cbook.safe_masked_invalid)
 
 
 # def subplots(*args, **kwargs):
