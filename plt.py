@@ -23,6 +23,21 @@ plt.rcParams["pdf.fonttype"] = 42
 plt.rcParams["savefig.bbox"] = "tight"
 
 
+def detach_tensor(func):
+    def wrapper(x, copy=False):
+        try:
+            if isinstance(x, Tensor):
+                x = x.detach()
+        except:
+            pass
+        return func(x, copy=copy)
+
+    return wrapper
+
+
+cbook.safe_masked_invalid = detach_tensor(cbook.safe_masked_invalid)
+
+
 def imshow(*args, **kwargs):
     im = plt.imshow(*args, **kwargs)
     plt.gca().grid(False)
@@ -49,21 +64,6 @@ def hbox(*iterable, **kwargs):
     display.display(ipywidgets.HBox(widgets))
 
 
-def detach_tensor(func):
-    def wrapper(x, copy=False):
-        try:
-            if isinstance(x, Tensor):
-                x = x.detach()
-        except:
-            pass
-        return func(x, copy=copy)
-
-    return wrapper
-
-
-cbook.safe_masked_invalid = detach_tensor(cbook.safe_masked_invalid)
-
-
 def add_colorbar(pad=0.02, width=0.04, im=None, ax=None, fig=None):
     if ax is None:
         ax: plt.Axes = plt.gca()
@@ -74,6 +74,10 @@ def add_colorbar(pad=0.02, width=0.04, im=None, ax=None, fig=None):
     box = ax.get_position()
     cax = fig.add_axes([box.x1 + pad, box.y0, width, box.height])
     plt.colorbar(im, cax=cax)
+
+
+def savefig(fname, bbox_inches="tight", pad_inches=0.0, **kwargs):
+    return plt.savefig(fname, bbox_inches=bbox_inches, pad_inches=pad_inches, **kwargs)
 
 
 # def subplots(*args, **kwargs):
