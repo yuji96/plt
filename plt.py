@@ -3,7 +3,7 @@ import io
 
 import IPython.display as display
 import ipywidgets
-import japanize_matplotlib
+import matplotlib_fontja
 import matplotlib.figure
 import matplotlib.pyplot as plt
 from matplotlib import cbook

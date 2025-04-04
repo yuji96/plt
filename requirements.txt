@@ -1,3 +1,4 @@
 matplotlib
 seaborn
-japanize-matplotlib
+matplotlib-fontja
+ipywidgets
