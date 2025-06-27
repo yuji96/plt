@@ -24,7 +24,7 @@ plt.rcParams["savefig.bbox"] = "tight"
 plt.rcParams["pdf.fonttype"] = 42
 plt.rcParams["font.size"] = 10
 
-set_matplotlib_formats("svg")
+# set_matplotlib_formats("svg")
 
 
 def detach_tensor(func):
