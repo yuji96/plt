@@ -28,13 +28,13 @@ plt.rcParams["font.size"] = 10
 
 
 def detach_tensor(func):
-    def wrapper(x, copy=False):
+    def wrapper(x):
         try:
             if isinstance(x, Tensor):
                 x = x.detach().cpu()
         except:
             pass
-        return func(x, copy=copy)
+        return func(x)
 
     return wrapper
 
