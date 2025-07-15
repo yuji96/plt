@@ -24,17 +24,17 @@ plt.rcParams["savefig.bbox"] = "tight"
 plt.rcParams["pdf.fonttype"] = 42
 plt.rcParams["font.size"] = 10
 
-set_matplotlib_formats("svg")
+# set_matplotlib_formats("svg")
 
 
 def detach_tensor(func):
-    def wrapper(x, copy=False):
+    def wrapper(x):
         try:
             if isinstance(x, Tensor):
                 x = x.detach().cpu()
         except:
             pass
-        return func(x, copy=copy)
+        return func(x)
 
     return wrapper
 
@@ -42,6 +42,7 @@ def detach_tensor(func):
 cbook._unpack_to_numpy = detach_tensor(cbook._unpack_to_numpy)
 
 
+@detach_tensor
 def imshow(*args, **kwargs):
     im = plt.imshow(*args, **kwargs)
     plt.gca().grid(False)
